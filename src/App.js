@@ -1,25 +1,85 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.css';
+import { Component } from 'react';
+
+
+class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      countries: [],
+      filteredCountries: [],
+
+    };
+  }
+  componentDidMount() {
+    fetch("https://restcountries.com/v3.1/all")
+      .then((response) => response.json())
+      .then((countryData) =>
+        this.setState(
+          () => {
+            return { countries: countryData, filteredCountries: countryData }
+          },
+          () => {
+            console.log(this.state + "1")
+          }
+        )
+      );
+  }
+
+  render() {
+
+    return (
+      <div className="App">
+        <div className="header">
+          <h1>Country Info</h1>
+          <input type="text" placeholder='Search' onChange={(event) => {
+
+            const filteredCountriesRaw = this.state.countries.filter((country) => {
+              return country.name.common.toLowerCase().includes(event.target.value.toLowerCase());
+            })
+            this.setState(() => {
+              return { filteredCountries: filteredCountriesRaw }
+            })
+
+          }} />
+        </div>
+        <div className="container">
+          {
+            this.state.filteredCountries.map((country) => {
+              return (
+                <div key={country.name.official} className="card">
+                  <img src={country.flags.png} alt="" />
+                  <h1>{country.name.common}</h1>
+                  <p>Population:{country.population} </p>
+                  <p>Location: {country.subregion}, {country.region}</p>
+                </div>
+              )
+
+
+
+            })
+          }
+
+        </div>
+      </div>
+    );
+  }
+
+
+
 }
 
+
 export default App;
+
+
+/*this.state.countries.map(country)=>{
+  return
+<div className="card">
+  <img src={this.state.countries.flags.png} alt="" />
+  <h1>{this.state.countries.name.common}</h1>
+  <p>Population: </p>
+  <p>Location: </p>
+</div>*/
