@@ -28,22 +28,24 @@ class App extends Component {
       );
   }
 
+  onTextChange = (event) => {
+
+    const filteredCountriesRaw = this.state.countries.filter((country) => {
+      return country.name.common.toLowerCase().includes(event.target.value.toLowerCase());
+    })
+    this.setState(() => {
+      return { filteredCountries: filteredCountriesRaw }
+    })
+
+  }
+
   render() {
 
     return (
       <div className="App">
         <div className="header">
           <h1>Country Info</h1>
-          <input type="text" placeholder='Search' onChange={(event) => {
-
-            const filteredCountriesRaw = this.state.countries.filter((country) => {
-              return country.name.common.toLowerCase().includes(event.target.value.toLowerCase());
-            })
-            this.setState(() => {
-              return { filteredCountries: filteredCountriesRaw }
-            })
-
-          }} />
+          <input type="text" placeholder='Search' onChange={this.onTextChange} />
         </div>
         <div className="container">
           {
