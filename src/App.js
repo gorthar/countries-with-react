@@ -1,6 +1,7 @@
 
 import './App.css';
 import { Component } from 'react';
+import Countries from "./components/countries-list/countries-list.component";
 
 
 class App extends Component {
@@ -20,9 +21,6 @@ class App extends Component {
         this.setState(
           () => {
             return { countries: countryData, filteredCountries: countryData }
-          },
-          () => {
-            console.log(this.state + "1")
           }
         )
       );
@@ -36,7 +34,6 @@ class App extends Component {
     this.setState(() => {
       return { filteredCountries: filteredCountriesRaw }
     })
-
   }
 
   render() {
@@ -47,30 +44,12 @@ class App extends Component {
           <h1>Country Info</h1>
           <input type="text" placeholder='Search' onChange={this.onTextChange} />
         </div>
-        <div className="container">
-          {
-            this.state.filteredCountries.map((country) => {
-              return (
-                <div key={country.name.official} className="card">
-                  <img src={country.flags.png} alt="" />
-                  <h1>{country.name.common}</h1>
-                  <p>Population:{country.population} </p>
-                  <p>Location: {country.subregion}, {country.region}</p>
-                </div>
-              )
 
+        <Countries countries={this.state.filteredCountries} />
 
-
-            })
-          }
-
-        </div>
       </div>
     );
   }
-
-
-
 }
 
 
